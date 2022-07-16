@@ -1,0 +1,19 @@
+{
+  "name": "web-socket-checkers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lartg/web-socket-checkers.git"
+  },
+  "author": "Lartg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lartg/web-socket-checkers/issues"
+  },
+  "homepage": "https://github.com/Lartg/web-socket-checkers#readme"
+}
