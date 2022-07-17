@@ -88,6 +88,8 @@ function moveRedChecker(e, checker, currentPosition, mouseVector){
     updateGame(e, checker, currentPosition)
     return
       }
+  // capture down left
+  // capture down right
   }
   
 //-------------------------------------------------------------
@@ -106,18 +108,25 @@ function moveGreyChecker(e, checker, currentPosition, mouseVector){
     updateGame(e, checker, currentPosition)
     return
       }
+  // capture up left
+  // capture up right
   }
 //-------------------------------------------------------------
-function moveKingChecker(checker, currentPosition, mouseVector){
+function moveKingChecker(e, checker, currentPosition, mouseVector){
   
 }
 //-------------------------------------------------------------
 //send and receive moves through socket
 function updateGame(e, checker, currentPosition){
   e.preventDefault()
-  
   socket.emit('updatePosition', {checker, currentPosition}) 
 }
 //-------------------------------------------------------------
 // if mousedown e.target == checker && mouseup e.target == valid square => 
 // delete checker div and create new one, and emit on socket
+socket.on('updatePosition', function(checkerData){
+  console.log('this function is called')
+  var checker = document.getElementById(checkerData['checker'])
+  checker.style.right = `${checkerData['currentPosition'][0]}px`
+  checker.style.top = `${checkerData['currentPosition'][1]}px`
+})
