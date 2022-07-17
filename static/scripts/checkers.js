@@ -91,12 +91,12 @@ function moveRedChecker(e, checker, currentPosition, mouseVector, destination){
     updateGame(e, checker, currentPosition)
     return
       }
+
   // capture down right
-  
   if(mouseVector[0]>120&&mouseVector[0]<240&&mouseVector[1]>120&&mouseVector[1]<240){
-    let capture = false
     for(let i=1; i<=12; i++){
       const potentialCapture = document.getElementById(`grey${i}`)
+      if(potentialCapture){
       const potentialCapturePosition = getCheckerPosition(potentialCapture)
       if(potentialCapturePosition[0]==(currentPosition[0]-80)&&potentialCapturePosition[1]==(currentPosition[1]+80)){
         if(destination.className.includes('black')){
@@ -106,30 +106,81 @@ function moveRedChecker(e, checker, currentPosition, mouseVector, destination){
           capturePiece(e, potentialCapture.id)
           return
         }
-      }
+      }}
     }
   }
   // capture down left
+  if(mouseVector[0]>(-240)&&mouseVector[0]<(-120)&&mouseVector[1]>120&&mouseVector[1]<240){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`grey${i}`)
+      if(potentialCapture){
+      const potentialCapturePosition = getCheckerPosition(potentialCapture)
+      if(potentialCapturePosition[0]==(currentPosition[0]+80)&&potentialCapturePosition[1]==(currentPosition[1]+80)){
+        if(destination.className.includes('black')){
+          currentPosition[0]+=160
+          currentPosition[1]+=160
+          updateGame(e, checker, currentPosition)
+          capturePiece(e, potentialCapture.id)
+          return
+        }
+      }}
+    }
+  }
   }
   
 //-------------------------------------------------------------
-function moveGreyChecker(e, checker, currentPosition, mouseVector){
+function moveGreyChecker(e, checker, currentPosition, mouseVector, destination){
   // up left
-  if(mouseVector[0]>(-150)&&mouseVector[1]>(-150)&&mouseVector[0]<(20)&&mouseVector[1]<(-20)){
+  if(mouseVector[0]>(-120)&&mouseVector[1]>(-120)&&mouseVector[0]<(20)&&mouseVector[1]<(-20)){
     currentPosition[0]+=80
     currentPosition[1]-=80
     updateGame(e, checker, currentPosition)
     return
     }
   //up right
-  if(mouseVector[0]<(150)&&mouseVector[1]>(-150)&&mouseVector[0]>(-20)&&mouseVector[1]<(-20)){
+  if(mouseVector[0]<(120)&&mouseVector[1]>(-120)&&mouseVector[0]>(-20)&&mouseVector[1]<(-20)){
     currentPosition[0]-=80
     currentPosition[1]-=80
     updateGame(e, checker, currentPosition)
     return
       }
-  // capture up left
+
   // capture up right
+  if(mouseVector[0]>120&&mouseVector[0]<240&&mouseVector[1]>(-240)&&mouseVector[1]<(-120)){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`red${i}`)
+      if(potentialCapture){
+        const potentialCapturePosition = getCheckerPosition(potentialCapture)
+        if(potentialCapturePosition[0]==(currentPosition[0]-80)&&potentialCapturePosition[1]==(currentPosition[1]-80)){
+          if(destination.className.includes('black')){
+            currentPosition[0]-=160
+            currentPosition[1]-=160
+            updateGame(e, checker, currentPosition)
+            capturePiece(e, potentialCapture.id)
+            return
+          }
+        }
+      }
+    }
+  }
+  // capture up left
+  if(mouseVector[0]>(-240)&&mouseVector[0]<(-120)&&mouseVector[1]>(-240)&&mouseVector[1]<(-120)){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`red${i}`)
+      if(potentialCapture){
+        const potentialCapturePosition = getCheckerPosition(potentialCapture)
+        if(potentialCapturePosition[0]==(currentPosition[0]+80)&&potentialCapturePosition[1]==(currentPosition[1]-80)){
+          if(destination.className.includes('black')){
+            currentPosition[0]+=160
+            currentPosition[1]-=160
+            updateGame(e, checker, currentPosition)
+            capturePiece(e, potentialCapture.id)
+            return
+          }
+        }
+      }
+    }
+  }
   }
 //-------------------------------------------------------------
 function moveKingChecker(e, checker, currentPosition, mouseVector){
