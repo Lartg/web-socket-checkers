@@ -9,6 +9,9 @@ const Board = [
   ['w','b','w','b','w','b','w','b']
 ]
 
+let redCounter = 1
+let greyCounter = 1
+
 for(row in Board){
   for(square in Board[row]){
     if(Board[row][square] == 'w'){
@@ -22,15 +25,23 @@ for(row in Board){
       boardSquare.className = 'black'
       boardSquare.style.gridArea = row
       document.getElementById('board').insertAdjacentElement("beforeend", boardSquare)
-      if(row < 4 && row > 0){
+      if(row < 3){
         var checker = document.createElement('div')
-        checker.className = `red ${row} ${square}`
-        boardSquare.insertAdjacentElement("beforeend", checker)
+        checker.className = `red checker`
+        checker.id = `red${redCounter}`
+        checker.style.top = `${((row)*80)}px`
+        checker.style.right = `${((square)*80)}px`
+        redCounter += 1
+        document.getElementById('board').insertAdjacentElement("beforeend", checker)
       }
-      else if(row > 5 || row == 0){
+      else if(row > 4){
         var checker = document.createElement('div')
-        checker.className = `grey ${row} ${square}`
-        boardSquare.insertAdjacentElement("beforeend", checker)
+        checker.className = `grey checker`
+        checker.id = `grey${greyCounter}`
+        checker.style.top = `${((row)*80)}px`
+        checker.style.right = `${((square)*80)}px`
+        greyCounter+=1
+        document.getElementById('board').insertAdjacentElement("beforeend", checker)
       }
     }
   }

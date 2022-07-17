@@ -13,15 +13,9 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-  });
+  socket.on(console.log('SOCKET ON'));
 
   socket.broadcast.emit('hi');
-
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
 });
 
 server.listen(3000, () => {
