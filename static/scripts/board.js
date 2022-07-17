@@ -1,10 +1,30 @@
 const Board = [
-  [1,2,3,4,5,6,7,8],
-  [9,10,11,12,13,14,15,16],
-  [17,18,19,20,21,22,23,24],
-  [25,26,27,28,29,30,31,32],
-  [33,34,35,36,37,38,39,40],
-  [41,42,43,44,45,46,47,48],
-  [49,50,51,52,53,54,55,56],
-  [57,58,59,60,61,62,63,64]
+  ['w','b','w','b','w','b','w','b'],
+  ['b','w','b','w','b','w','b','w'],
+  ['w','b','w','b','w','b','w','b'],
+  ['b','w','b','w','b','w','b','w'],
+  ['w','b','w','b','w','b','w','b'],
+  ['b','w','b','w','b','w','b','w'],
+  ['w','b','w','b','w','b','w','b'],
+  ['b','w','b','w','b','w','b','w']
 ]
+
+for(row in Board){
+  for(square in Board[row]){
+    if(Board[row][square] == 'w'){
+      var square = document.createElement('div')
+      square.className = 'white'
+      console.log(square)
+      square.style.gridArea = row
+      document.getElementById('board').insertAdjacentElement("beforeend", square)
+    }
+    else{
+      var square = document.createElement('div')
+      square.className = 'black'
+      square.style.gridArea = row
+      console.log(square)
+      
+      document.getElementById('board').insertAdjacentElement("beforeend", square)
+    }
+  }
+}

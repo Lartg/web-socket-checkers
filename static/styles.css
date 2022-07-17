@@ -1,0 +1,26 @@
+#board{
+  height: 640px;
+  width: 640px;
+  display: grid;
+  grid-template-areas: 
+  '0'
+  '1'
+  '2'
+  '3'
+  '4'
+  '5'
+  '6'
+  '7'
+  ;
+  
+}
+.black{
+  height: 80px;
+  width: 80px;
+  background-color: black;
+}
+.white{
+  height: 80px;
+  width: 80px;
+  background-color: blanchedalmond;
+}
