@@ -13,9 +13,10 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  socket.on(console.log('SOCKET ON'));
-
-  socket.broadcast.emit('hi');
+  console.log('connection')
+  socket.on('updatePosition', checkerData => {
+    console.log(checkerData)
+  })
 });
 
 server.listen(3000, () => {
