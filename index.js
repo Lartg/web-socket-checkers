@@ -18,6 +18,9 @@ io.on('connection', (socket) => {
     console.log(checkerData)
     io.emit('updatePosition', checkerData)
   })
+  socket.on('capture', (captureData) =>{
+    io.emit('capture', captureData)
+  })
 });
 
 server.listen(3000, () => {

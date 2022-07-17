@@ -22,12 +22,14 @@ function move(e){
   const checkerId = checker.id
   
   if(prep[0] == 'grey turn' && destination.className=='black'){
-    moveGreyChecker(e, checkerId, currentPosition, mouseVector)
-    turn+=1
+    
+    moveGreyChecker(e, checkerId, currentPosition, mouseVector, destination)
+    // turn+=1
   }
   else if(prep[0] == 'red turn' && destination.className=='black'){
-    moveRedChecker(e, checkerId, currentPosition, mouseVector)
-    turn+=1
+    //check for capture
+    moveRedChecker(e, checkerId, currentPosition, mouseVector, destination)
+    // turn+=1
   }
 }
 
@@ -73,23 +75,41 @@ function getCheckerPosition(checker){
   return position
 }
 //-------------------------------------------------------------
-function moveRedChecker(e, checker, currentPosition, mouseVector){
+function moveRedChecker(e, checker, currentPosition, mouseVector, destination){
   // down left
-  if(mouseVector[0]>(-150)&&mouseVector[1]<(150)&&mouseVector[0]<(20)&&mouseVector[1]>20){
+  console.log(mouseVector)
+  if(mouseVector[0]>(-120)&&mouseVector[1]<(120)&&mouseVector[0]<(20)&&mouseVector[1]>20){
     currentPosition[0]+=80
     currentPosition[1]+=80
     updateGame(e, checker, currentPosition)
     return
     }
   //down right
-  if(mouseVector[0]<(150)&&mouseVector[1]<(150)&&mouseVector[0]>(-20)&&mouseVector[1]>20){
+  if(mouseVector[0]<(120)&&mouseVector[1]<(120)&&mouseVector[0]>(-20)&&mouseVector[1]>20){
     currentPosition[0]-=80
     currentPosition[1]+=80
     updateGame(e, checker, currentPosition)
     return
       }
-  // capture down left
   // capture down right
+  
+  if(mouseVector[0]>120&&mouseVector[0]<240&&mouseVector[1]>120&&mouseVector[1]<240){
+    let capture = false
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`grey${i}`)
+      const potentialCapturePosition = getCheckerPosition(potentialCapture)
+      if(potentialCapturePosition[0]==(currentPosition[0]-80)&&potentialCapturePosition[1]==(currentPosition[1]+80)){
+        if(destination.className.includes('black')){
+          currentPosition[0]-=160
+          currentPosition[1]+=160
+          updateGame(e, checker, currentPosition)
+          capturePiece(e, potentialCapture.id)
+          return
+        }
+      }
+    }
+  }
+  // capture down left
   }
   
 //-------------------------------------------------------------
@@ -122,11 +142,19 @@ function updateGame(e, checker, currentPosition){
   socket.emit('updatePosition', {checker, currentPosition}) 
 }
 //-------------------------------------------------------------
-// if mousedown e.target == checker && mouseup e.target == valid square => 
-// delete checker div and create new one, and emit on socket
+function capturePiece(e, captureData){
+  e.preventDefault()
+  socket.emit('capture', captureData)
+}
+//-------------------------------------------------------------
 socket.on('updatePosition', function(checkerData){
-  console.log('this function is called')
   var checker = document.getElementById(checkerData['checker'])
   checker.style.right = `${checkerData['currentPosition'][0]}px`
   checker.style.top = `${checkerData['currentPosition'][1]}px`
+  turn+=1
+})
+
+socket.on('capture', function(captureData){
+  var capture = document.getElementById(captureData)
+  capture.remove()
 })
