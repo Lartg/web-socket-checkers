@@ -15,11 +15,13 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   // console.log('connection')
   socket.on('updatePosition', (checkerData) => {
-    console.log(checkerData)
     io.emit('updatePosition', checkerData)
   })
   socket.on('capture', (captureData) =>{
     io.emit('capture', captureData)
+  })
+  socket.on('promote', (checkerId) =>{
+    io.emit('promote', checkerId)
   })
 });
 

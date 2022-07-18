@@ -43,3 +43,10 @@
   border-radius: 50%;
   background-color: grey;
 }
+.king{
+  border-color:gold;
+  border-width: 5px;
+  border-style: dotted;
+  margin-right: 5px;
+  margin-top: 5px;
+}

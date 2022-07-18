@@ -9,7 +9,6 @@ function prepMove(e){
   const checker = e.target
   const mouseOrigin = [e.clientX, e.clientY]
   prep = [checkTarget(checker, turn), getCheckerPosition(checker), checker, mouseOrigin]
-  console.log(prep)
   return
 }
 function move(e){
@@ -22,14 +21,26 @@ function move(e){
   const checkerId = checker.id
   
   if(prep[0] == 'grey turn' && destination.className=='black'){
-    
+    if(checker.className.includes('king')){
+      moveKingChecker(e, checkerId, currentPosition, mouseVector, destination)
+      return
+    }
     moveGreyChecker(e, checkerId, currentPosition, mouseVector, destination)
-    // turn+=1
+    if(checkGreyPromote(checkerId, currentPosition)){
+      promoteChecker(e, checkerId)
+    }
+    return
   }
   else if(prep[0] == 'red turn' && destination.className=='black'){
-    //check for capture
+    if(checker.className.includes('king')){
+      moveKingChecker(e, checkerId, currentPosition, mouseVector, destination)
+      return
+    }
     moveRedChecker(e, checkerId, currentPosition, mouseVector, destination)
-    // turn+=1
+    if(checkRedPromote(checkerId, currentPosition)){
+      promoteChecker(e, checkerId)
+    }
+    return
   }
 }
 
@@ -77,7 +88,6 @@ function getCheckerPosition(checker){
 //-------------------------------------------------------------
 function moveRedChecker(e, checker, currentPosition, mouseVector, destination){
   // down left
-  console.log(mouseVector)
   if(mouseVector[0]>(-120)&&mouseVector[1]<(120)&&mouseVector[0]<(20)&&mouseVector[1]>20){
     currentPosition[0]+=80
     currentPosition[1]+=80
@@ -183,7 +193,129 @@ function moveGreyChecker(e, checker, currentPosition, mouseVector, destination){
   }
   }
 //-------------------------------------------------------------
-function moveKingChecker(e, checker, currentPosition, mouseVector){
+function checkGreyPromote(checkerId, currentPosition){
+  if(currentPosition[1] == 0){
+    return true
+  }
+  return false
+}
+//-------------------------------------------------------------
+function checkRedPromote(checkerId, currentPosition){
+  if(currentPosition[1] == 560){
+    return true
+  }
+  return false
+}
+
+//-------------------------------------------------------------
+function moveKingChecker(e, checker, currentPosition, mouseVector, destination){
+  let oppositeColor = 'red'
+  let color = 'grey'
+  
+  if(document.getElementById(checker).className.includes('red')){
+    color = 'red'
+    oppositeColor = 'grey'
+  }
+  // up left
+  if(mouseVector[0]>(-120)&&mouseVector[1]>(-120)&&mouseVector[0]<(20)&&mouseVector[1]<(-20)){
+    currentPosition[0]+=80
+    currentPosition[1]-=80
+    updateGame(e, checker, currentPosition)
+    return
+    }
+  //up right
+  if(mouseVector[0]<(120)&&mouseVector[1]>(-120)&&mouseVector[0]>(-20)&&mouseVector[1]<(-20)){
+    currentPosition[0]-=80
+    currentPosition[1]-=80
+    updateGame(e, checker, currentPosition)
+    return
+      }
+
+  // capture up right
+  if(mouseVector[0]>120&&mouseVector[0]<240&&mouseVector[1]>(-240)&&mouseVector[1]<(-120)){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`${oppositeColor}${i}`)
+      if(potentialCapture){
+        const potentialCapturePosition = getCheckerPosition(potentialCapture)
+        if(potentialCapturePosition[0]==(currentPosition[0]-80)&&potentialCapturePosition[1]==(currentPosition[1]-80)){
+          if(destination.className.includes('black')){
+            currentPosition[0]-=160
+            currentPosition[1]-=160
+            updateGame(e, checker, currentPosition)
+            capturePiece(e, potentialCapture.id)
+            return
+          }
+        }
+      }
+    }
+  }
+  // capture up left
+  if(mouseVector[0]>(-240)&&mouseVector[0]<(-120)&&mouseVector[1]>(-240)&&mouseVector[1]<(-120)){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`${oppositeColor}${i}`)
+      if(potentialCapture){
+        const potentialCapturePosition = getCheckerPosition(potentialCapture)
+        if(potentialCapturePosition[0]==(currentPosition[0]+80)&&potentialCapturePosition[1]==(currentPosition[1]-80)){
+          if(destination.className.includes('black')){
+            currentPosition[0]+=160
+            currentPosition[1]-=160
+            updateGame(e, checker, currentPosition)
+            capturePiece(e, potentialCapture.id)
+            return
+          }
+        }
+      }
+    }
+  }
+  // down left
+  if(mouseVector[0]>(-120)&&mouseVector[1]<(120)&&mouseVector[0]<(20)&&mouseVector[1]>20){
+    currentPosition[0]+=80
+    currentPosition[1]+=80
+    updateGame(e, checker, currentPosition)
+    return
+    }
+  //down right
+  if(mouseVector[0]<(120)&&mouseVector[1]<(120)&&mouseVector[0]>(-20)&&mouseVector[1]>20){
+    currentPosition[0]-=80
+    currentPosition[1]+=80
+    updateGame(e, checker, currentPosition)
+    return
+      }
+
+  // capture down right
+  if(mouseVector[0]>120&&mouseVector[0]<240&&mouseVector[1]>120&&mouseVector[1]<240){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`${oppositeColor}${i}`)
+      if(potentialCapture){
+      const potentialCapturePosition = getCheckerPosition(potentialCapture)
+      if(potentialCapturePosition[0]==(currentPosition[0]-80)&&potentialCapturePosition[1]==(currentPosition[1]+80)){
+        if(destination.className.includes('black')){
+          currentPosition[0]-=160
+          currentPosition[1]+=160
+          updateGame(e, checker, currentPosition)
+          capturePiece(e, potentialCapture.id)
+          return
+        }
+      }}
+    }
+  }
+  // capture down left
+  if(mouseVector[0]>(-240)&&mouseVector[0]<(-120)&&mouseVector[1]>120&&mouseVector[1]<240){
+    for(let i=1; i<=12; i++){
+      const potentialCapture = document.getElementById(`${oppositeColor}${i}`)
+      if(potentialCapture){
+      const potentialCapturePosition = getCheckerPosition(potentialCapture)
+      if(potentialCapturePosition[0]==(currentPosition[0]+80)&&potentialCapturePosition[1]==(currentPosition[1]+80)){
+        if(destination.className.includes('black')){
+          currentPosition[0]+=160
+          currentPosition[1]+=160
+          updateGame(e, checker, currentPosition)
+          capturePiece(e, potentialCapture.id)
+          return
+        }
+      }}
+    }
+  }
   
 }
 //-------------------------------------------------------------
@@ -198,8 +330,14 @@ function capturePiece(e, captureData){
   socket.emit('capture', captureData)
 }
 //-------------------------------------------------------------
+function promoteChecker(e, checkerId){
+  e.preventDefault()
+  socket.emit('promote', checkerId)
+}
+//-------------------------------------------------------------
 socket.on('updatePosition', function(checkerData){
   var checker = document.getElementById(checkerData['checker'])
+  console.log(checker)
   checker.style.right = `${checkerData['currentPosition'][0]}px`
   checker.style.top = `${checkerData['currentPosition'][1]}px`
   turn+=1
@@ -208,4 +346,11 @@ socket.on('updatePosition', function(checkerData){
 socket.on('capture', function(captureData){
   var capture = document.getElementById(captureData)
   capture.remove()
+})
+
+socket.on('promote', function(checkerId){
+  var promotedPiece = document.getElementById(checkerId)
+  console.log(checkerId)
+  promotedPiece.className = promotedPiece.className+' king'
+  console.log(promotedPiece.className)
 })
